@@ -13,7 +13,7 @@
   "files": ["lib/**/*"],
   "keywords": ["css keyframes", "animation", "web animation api", "conversion", "keyframes", "animate"],
   "author": "zivpug - https://github.com/zivpug",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cssjson": "^2.1.3"
   },

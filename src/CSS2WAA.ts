@@ -13,14 +13,14 @@ const chainedReplacer = `$2 $9 $6 $9`;
 
 export const css2waa = (animation: string): Keyframe[] => {
   /**
-     String fixes required for toJSON
+      fixes CSS keyframes support for CSSJSON
      **/
   animation = fixMissingLastSemicolon(animation);
   animation = fixChainedPercentage(animation);
   animation = fixTransformOrigin(animation);
 
   /**
-     Convert to JSON object
+     Convert to JSON object using CSSJSON.toJSON()
      **/
   let animationObj = toJSON(animation).children;
 
@@ -72,5 +72,8 @@ export const fixTransformOrigin = (animation: string): string => {
 };
 
 export const convertPercentagesToDecimal = (string: string): number => {
+  if (string === "from" || string === "to"){
+    return string === "from" ? 0 : 1;
+  }
   return string.includes('%') ? parseFloat(string) / 100 : 0;
 };

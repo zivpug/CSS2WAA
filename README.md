@@ -2,6 +2,15 @@
 
 Convert CSS Keyframes into [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API) animation objects array.
 
+### About
+
+Version 1.0.0.
+Released under the MIT license.
+
+### Dependency
+This package fixes CSS keyframes support in  [cssJson](https://github.com/aramk/CSSJSON) and uses it to convert the CSS keyframes to JSON, to be ported into Web Animation API format. 
+
+
 ### What is this
 css2waa will convert a CSS keyframes (in a string) into a Web Animation API animation object. 
 Web Animation API options should be added separately, since it"s a plain object that requires no conversion.
@@ -39,6 +48,22 @@ document.getElementById("myDiv")
     .animate(WAAAnimationsArray, options);
 ```
 
+Above code will output the following object:
+```
+[
+  {
+    "offset": 0,
+    "margin-left": "100%",
+    "width": "300%"
+  },
+  {
+    "offset": 1,
+    "margin-left": "0%",
+    "width": "100%"
+  }
+]
+
+```
 ### Option object sample
 
 This object will not be created by this package, but this is a quick reference how to use it. 
