@@ -4,13 +4,13 @@ Convert CSS Keyframes into [Web Animation API](https://developer.mozilla.org/en-
 
 ### What is this
 css2waa will convert a CSS keyframes (in a string) into a Web Animation API animation object. 
-Web Animation API options should be added separately, since it's a plain object that requires no conversion.
+Web Animation API options should be added separately, since it"s a plain object that requires no conversion.
 
 ### Sample
 ```
-import {css2waa} from 'CSS2WAA';
+import {css2waa} from "CSS2WAA";
 
-const myCssKeyframes = '@keyframes slidein {
+const myCssKeyframes = "@keyframes slidein {
   from {
     margin-left:100%;
     width:300%
@@ -20,22 +20,22 @@ const myCssKeyframes = '@keyframes slidein {
     margin-left:0%;
     width:100%;
   }
-}'
+}"
 
 const options = {
   iterations: 4,
   iterationStart: 0,
   delay: 2000,
   endDelay: 0,
-  direction: 'alternate',
+  direction: "alternate",
   duration: 3500,
-  fill: 'forwards',
-  easing: 'ease-out',
+  fill: "forwards",
+  easing: "ease-out",
 }
 
 const WAAAnimationsArray = css2waa(myCssKeyframes);
 
-document.getElementById('myDiv')
+document.getElementById("myDiv")
     .animate(WAAAnimationsArray, options);
 ```
 
