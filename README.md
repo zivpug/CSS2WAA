@@ -1,16 +1,12 @@
-##CSS2WAA
+## CSS2WAA
 
 Convert CSS Keyframes into [Web Animation API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API) animation objects array.
 
-
-###Install
-
-###What is this
+### What is this
 css2waa will convert a CSS keyframes (in a string) into a Web Animation API animation object. 
 Web Animation API options should be added separately, since it's a plain object that requires no conversion.
 
-
-###Sample
+### Sample
 ```
 import {css2waa} from 'CSS2WAA';
 
@@ -43,7 +39,7 @@ document.getElementById('myDiv')
     .animate(WAAAnimationsArray, options);
 ```
 
-###Option object sample
+### Option object sample
 
 This object will not be created by this package, but this is a quick reference how to use it. 
 For more info: 
