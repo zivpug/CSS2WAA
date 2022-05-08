@@ -20,7 +20,7 @@ Web Animation API options should be added separately, since it"s a plain object 
 ```
 import {css2waa} from "CSS2WAA";
 
-const myCssKeyframes = "@keyframes slidein {
+const myCssKeyframes = `@keyframes slidein {
   from {
     margin-left:100%;
     width:300%
@@ -30,7 +30,7 @@ const myCssKeyframes = "@keyframes slidein {
     margin-left:0%;
     width:100%;
   }
-}"
+}``
 
 const options = {
   iterations: 4,
