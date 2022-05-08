@@ -30,7 +30,7 @@ const myCssKeyframes = `@keyframes slidein {
     margin-left:0%;
     width:100%;
   }
-}``
+}`
 
 const options = {
   iterations: 4,
