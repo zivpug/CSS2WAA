@@ -13,8 +13,12 @@ This package fixes CSS keyframes support in  [cssJson](https://github.com/aramk/
 
 
 ### What is this
-css2waa will convert a CSS keyframes (in a string) into a Web Animation API animation object. 
+
+**css2waa**  will convert a CSS keyframes (string) into a Web Animation API animation object. 
 Web Animation API options should be added separately, since it"s a plain object that requires no conversion.
+
+**waa2css** will convert a Web Animation API keyframes object, into a CSS keyframes (string).
+Css timing and options should be added separately when calling the CSS animation. 
 
 ### Sample
 ```
