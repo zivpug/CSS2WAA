@@ -1,7 +1,7 @@
 {
   "name": "css2waa",
-  "version": "1.0.0",
-  "description": "Convert CSS Keyframes into Web Animation API objects",
+  "version": "0.0.9",
+  "description": "Convert between CSS Keyframes and Web Animation API objects",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
