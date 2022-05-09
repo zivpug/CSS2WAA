@@ -1,7 +1,7 @@
 type WebAnimationAPIArgs = [Keyframe[], PropertyIndexedKeyframes];
 
 
-export const getKeyframesFromWAA = (
+export const waa2css = (
     animation: WebAnimationAPIArgs
 ): string => animation[0].reduce((keyframes: string, keyframe) => {
     const cssKeyframe: any = {...keyframe};

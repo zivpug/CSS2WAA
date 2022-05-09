@@ -29,7 +29,10 @@ const myCssKeyframes = `@keyframes slidein {
     margin-left:100%;
     width:300%
   }
-
+  50% {
+    margin-left:50%;
+    width:200%
+  }
   to {
     margin-left:0%;
     width:100%;
@@ -60,6 +63,11 @@ Above code will output the following object:
     "offset": 0,
     "margin-left": "100%",
     "width": "300%"
+  },
+  {
+    "offset": 0.5,
+    "margin-left": "50%",
+    "width": "200%"
   },
   {
     "offset": 1,

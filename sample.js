@@ -1,9 +1,14 @@
-const {css2waa} = require('./lib/CSS2WAA');
+const {css2waa} = require('./lib/');
 
 const myCssKeyframes = `@keyframes slidein {
   from {
     margin-left:100%;
     width:300%
+  }
+
+  50% {
+    margin-left:50%;
+    width:200%
   }
 
   to {

@@ -1,4 +1,4 @@
-import {fixTransformOriginToCss, getKeyframesFromWAA, parseKeyframe} from "./WAA2CSS";
+import {fixTransformOriginToCss, waa2css, parseKeyframe} from "./WAA2CSS";
 
 const testWaaAnimation = [
     {
@@ -63,7 +63,7 @@ const testKeyframe = {
 }
 
 test("should return a string with valid CSS animation", () => {
-    const re = getKeyframesFromWAA([testWaaAnimation, {}]);
+    const re = waa2css([testWaaAnimation, {}]);
     expect(re).toBe(returnedTestCss);
 })
 

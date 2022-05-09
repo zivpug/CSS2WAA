@@ -29,7 +29,7 @@ export const css2waa = (animation: string): Keyframe[] => {
      **/
   return Object.keys(animationObj)
     .map((key) => buildWaaObjects(animationObj[key].children))
-    .flat();
+      .flat();
 };
 
 export const buildWaaObjects = (obj: JSONKeyframes): Keyframe[] => {
