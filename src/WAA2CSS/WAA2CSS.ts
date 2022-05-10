@@ -1,11 +1,9 @@
-type WebAnimationAPIArgs = [Keyframe[], PropertyIndexedKeyframes];
-
 
 export const waa2css = (
-    animation: WebAnimationAPIArgs
-): string => animation[0].reduce((keyframes: string, keyframe) => {
+    animation: Keyframe[]
+): string => animation.reduce((keyframes: string, keyframe) => {
     const cssKeyframe: any = {...keyframe};
-    if (cssKeyframe.offset) {
+    if (cssKeyframe.offset || cssKeyframe.offset === 0) {
         const percent = `${Math.round(cssKeyframe.offset * 100)}%`;
         return `${keyframes} ${percent} {${parseKeyframe(cssKeyframe)}}\n`;
     }
