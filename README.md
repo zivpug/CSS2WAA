@@ -5,8 +5,16 @@ Convert CSS Keyframes into [Web Animation API](https://developer.mozilla.org/en-
 
 ### About
 
-Version 1.0.0.
+Version 0.0.9
+
 Released under the MIT license.
+
+### Build
+```
+yarn run build // will build the packge into ./lib
+yarn run test // run all tests
+```
+** no npm package yet
 
 ### Dependency
 This package fixes CSS keyframes support in  [cssJson](https://github.com/aramk/CSSJSON) and uses it to convert the CSS keyframes to JSON, to be ported into Web Animation API format. 
@@ -112,7 +120,7 @@ Above waa2css() will produce the following string:
      100% { offset: 1; margin-left: 0%; width: 100%;}`
 ```
 
-### Option object sample
+### Options object sample
 
 This object will not be created by this package, but this is a quick reference how to use it. 
 For more info: 
