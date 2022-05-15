@@ -8,8 +8,13 @@ type JSONKeyframes = {
 };
 
 const missingSemicolon = /(?<!})(?<!;)}/gm;
-const chainedPercentages = /(((([0-9]+)%)),((?:\s*){1,3}))(([0-9]+)%)((?:\s*){1,3})({([^}]*)})/gm;
-const chainedReplacer = `$2 $9 $6 $9`;
+const chainedPercentages = /((([0-9]+)%),((?:\s*){1,3}))+(([0-9]+)%)((?:\s*){1,3})({([^}]*)})/gm;
+const findPercentage = /(\d+(\.\d+)?%)/gm;
+const findKeyframe = /({[\s\S]*})/gm;
+const findFrom = /(.)(from)(,|{|\s|{)(.*)/gm;
+const findTo = /(.)(to)(,|{|\s|{)(.*)/gm;
+const multiSpaces = /\s\s+/g;
+const multiSemicolons = /;[\s]+;/g;
 
 export const css2waa = (animation: string): Keyframe[] => {
   /**
@@ -55,13 +60,37 @@ export const buildWaaObjects = (obj: JSONKeyframes): Keyframe[] => {
  100% { ... }
  **/
 export const fixChainedPercentage = (string: string): string => {
+  string = fixNamedPercentagesAndClean(string);
   let match = string.match(chainedPercentages);
-  while (match) {
-    string = string.replace(chainedPercentages, chainedReplacer);
-    match = string.match(chainedPercentages);
+
+  if (match) {
+    match.forEach((str: string) => {
+      string = string.replace(str, separateValues(str));
+    })
   }
+
   return string;
 };
+
+const separateValues = (string: string): string => {
+  const keyframe = string.match(findKeyframe);
+  const percentages = string.match(findPercentage)
+  if (percentages) {
+    return percentages.reduce((newStr: string, str: string) => {
+      return `${newStr} ${str} ${keyframe}`;
+    }, '')
+  }
+  return string;
+}
+
+export const fixNamedPercentagesAndClean = (string: string): string => {
+  string = string.replace(findFrom, '$1 0% $3 $4');
+  string = string.replace(findTo, '$1 100% $3 $4');
+  string = string.replace('% ,', '%, ');
+  string = string.replace(multiSpaces, ' ');
+  string = string.replace(multiSemicolons, ';');
+  return string;
+}
 
 export const fixMissingLastSemicolon = (string: string): string => {
   return string.replace(missingSemicolon, ';}');

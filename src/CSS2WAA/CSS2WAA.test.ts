@@ -4,7 +4,7 @@ import {
   fixChainedPercentage,
   fixMissingLastSemicolon,
   convertPercentagesToDecimal,
-  css2waa,
+  css2waa, fixNamedPercentagesAndClean,
 } from './CSS2WAA';
 
 const testAnimationBounce =
@@ -16,98 +16,156 @@ const testAnimationTransformOrigin =
 const testAnimationWobble =
   '@keyframes wobble-ver-left {0%,100% { transform: translateY(0) rotate(0); transform-origin: 50% 50%;}15% { transform: translateY(-30px) rotate(-6deg);}30% { transform: translateY(15px) rotate(6deg);}45% { transform: translateY(-15px) rotate(-3.6deg);}60% { transform: translateY(9px) rotate(2.4deg);}75% { transform: translateY(-6px) rotate(-1.2deg);}}';
 
-test('returns correct WAA object', () => {
-  const returnTestAnimation = [
-    {
-      offset: 0,
-      transform: 'translateY(-500px)',
-      'animation-timing-function': 'ease-in',
-      opacity: '0',
-    },
-    {
-      offset: 0.38,
-      transform: 'translateY(0)',
-      'animation-timing-function': 'ease-out',
-      opacity: '1',
-    },
-    {
-      offset: 0.55,
-      transform: 'translateY(-65px)',
-      'animation-timing-function': 'ease-in',
-    },
-    {
-      offset: 0.72,
-      transform: 'translateY(0)',
-      'animation-timing-function': 'ease-out',
-    },
-    {
-      offset: 0.81,
-      transform: 'translateY(-28px)',
-      'animation-timing-function': 'ease-in',
-    },
-    {
-      offset: 0.9,
-      transform: 'translateY(0)',
-      'animation-timing-function': 'ease-out',
-    },
-    {
-      offset: 0.95,
-      transform: 'translateY(-8px)',
-      'animation-timing-function': 'ease-in',
-    },
-    {
-      offset: 1,
-      transform: 'translateY(0)',
-      'animation-timing-function': 'ease-out',
-    },
-  ];
-  const returnAnimationTransformOrigin = [
-    {
-      offset: 0,
-      transform: 'translateY(-600px) rotateX(-30deg) scale(0)',
-      opacity: '0',
-      transformOrigin: '50% 100%',
-    },
-    {
-      offset: 1,
-      transform: 'translateY(0) rotateX(0) scale(1)',
-      opacity: '1',
-      transformOrigin: '50% 1400px',
-    },
-  ];
-  const returnAnimationWobble = [
-    {
-      offset: 0,
-      transform: 'translateY(0) rotate(0)',
-      transformOrigin: '50% 50%',
-    },
-    {
-      offset: 0.15,
-      transform: 'translateY(-30px) rotate(-6deg)',
-    },
-    {
-      offset: 0.3,
-      transform: 'translateY(15px) rotate(6deg)',
-    },
-    {
-      offset: 0.45,
-      transform: 'translateY(-15px) rotate(-3.6deg)',
-    },
-    {
-      offset: 0.6,
-      transform: 'translateY(9px) rotate(2.4deg)',
-    },
-    {
-      offset: 0.75,
-      transform: 'translateY(-6px) rotate(-1.2deg)',
-    },
-    {
-      offset: 1,
-      transform: 'translateY(0) rotate(0)',
-      transformOrigin: '50% 50%',
-    },
-  ];
+const tesAnimationPercentages = `@keyframes wobble-ver-left {
+    from, 50%, to {
+    opacity: 1;
+  }
+    40%,60% {
+    opacity: 0.5;
+  }
 
+  25%, 75% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0.3;
+  }
+}`
+
+const returnTestAnimation = [
+  {
+    offset: 0,
+    transform: 'translateY(-500px)',
+    'animation-timing-function': 'ease-in',
+    opacity: '0',
+  },
+  {
+    offset: 0.38,
+    transform: 'translateY(0)',
+    'animation-timing-function': 'ease-out',
+    opacity: '1',
+  },
+  {
+    offset: 0.55,
+    transform: 'translateY(-65px)',
+    'animation-timing-function': 'ease-in',
+  },
+  {
+    offset: 0.72,
+    transform: 'translateY(0)',
+    'animation-timing-function': 'ease-out',
+  },
+  {
+    offset: 0.81,
+    transform: 'translateY(-28px)',
+    'animation-timing-function': 'ease-in',
+  },
+  {
+    offset: 0.9,
+    transform: 'translateY(0)',
+    'animation-timing-function': 'ease-out',
+  },
+  {
+    offset: 0.95,
+    transform: 'translateY(-8px)',
+    'animation-timing-function': 'ease-in',
+  },
+  {
+    offset: 1,
+    transform: 'translateY(0)',
+    'animation-timing-function': 'ease-out',
+  },
+];
+const returnAnimationTransformOrigin = [
+  {
+    offset: 0,
+    transform: 'translateY(-600px) rotateX(-30deg) scale(0)',
+    opacity: '0',
+    transformOrigin: '50% 100%',
+  },
+  {
+    offset: 1,
+    transform: 'translateY(0) rotateX(0) scale(1)',
+    opacity: '1',
+    transformOrigin: '50% 1400px',
+  },
+];
+const returnAnimationWobble = [
+  {
+    "offset": 0,
+    "transform": "translateY(0) rotate(0)",
+    "transformOrigin": "50% 50%"
+  },
+  {
+    "offset": 0.15,
+    "transform": "translateY(-30px) rotate(-6deg)"
+  },
+  {
+    "offset": 0.3,
+    "transform": "translateY(15px) rotate(6deg)"
+  },
+  {
+    "offset": 0.45,
+    "transform": "translateY(-15px) rotate(-3.6deg)"
+  },
+  {
+    "offset": 0.5,
+    "transform": "translateY(0) rotate(0)",
+    "transformOrigin": "50% 50%"
+  },
+  {
+    "offset": 0.6,
+    "transform": "translateY(9px) rotate(2.4deg)"
+  },
+  {
+    "offset": 0.75,
+    "transform": "translateY(-6px) rotate(-1.2deg)"
+  },
+  {
+    "offset": 1,
+    "transform": "translateY(0) rotate(0)",
+    "transformOrigin": "50% 50%"
+  }
+];
+const returnedAnimationPercentages = `@keyframes wobble-ver-left { 0%, 50%, 100% { opacity: 1; } 40%,60% { opacity: 0.5; } 25%, 75% { opacity: 0; } 90% { opacity: 0.3; }
+}`;
+
+const returnedWaaFromPercentage = [
+  {
+    "offset": 0,
+    "opacity": "1"
+  },
+  {
+    "offset": 0.25,
+    "opacity": "0"
+  },
+  {
+    "offset": 0.4,
+    "opacity": "0.5"
+  },
+  {
+    "offset": 0.5,
+    "opacity": "1"
+  },
+  {
+    "offset": 0.6,
+    "opacity": "0.5"
+  },
+  {
+    "offset": 0.75,
+    "opacity": "0"
+  },
+  {
+    "offset": 0.9,
+    "opacity": "0.3"
+  },
+  {
+    "offset": 1,
+    "opacity": "1"
+  }
+];
+
+test('returns correct WAA object', () => {
   const re = css2waa(testAnimationWobble);
   expect(re).toEqual(returnAnimationWobble);
 
@@ -116,7 +174,15 @@ test('returns correct WAA object', () => {
 
   const re2 = css2waa(testAnimationTransformOrigin);
   expect(re2).toEqual(returnAnimationTransformOrigin);
+
+  const re3 = css2waa(tesAnimationPercentages)
+  expect(re3).toEqual(returnedWaaFromPercentage)
 });
+
+test("will clean string and replace named percentages (to/from) to numbers", () => {
+  const re = fixNamedPercentagesAndClean(tesAnimationPercentages)
+  expect(re).toBe(returnedAnimationPercentages)
+})
 
 test('will add missing semicolons', () => {
   const returnString =
@@ -130,7 +196,7 @@ test('will separate chained percentages into unique declarations', () => {
     '@keyframes shake-horizontal{0%{transform:translateX(0);} 10%, 100%{transform:translateX(0);} 30%,50%, 70%{transform:translateX(-10px);} 20%{transform:translateX(10px);} 40%{transform:translateX(10px);} 60%{transform:translateX(10px);} 80%{transform:translateX(8px);}90%{transform:translateX(-8px);}}';
 
   const returnStr =
-    '@keyframes shake-horizontal{0%{transform:translateX(0);} 10% {transform:translateX(0);} 100% {transform:translateX(0);} 30% {transform:translateX(-10px);} 50% {transform:translateX(-10px);} 70% {transform:translateX(-10px);} 20%{transform:translateX(10px);} 40%{transform:translateX(10px);} 60%{transform:translateX(10px);} 80%{transform:translateX(8px);}90%{transform:translateX(-8px);}}';
+    '@keyframes shake-horizontal{0%{transform:translateX(0);}  10% {transform:translateX(0);} 100% {transform:translateX(0);}  30% {transform:translateX(-10px);} 50% {transform:translateX(-10px);} 70% {transform:translateX(-10px);} 20%{transform:translateX(10px);} 40%{transform:translateX(10px);} 60%{transform:translateX(10px);} 80%{transform:translateX(8px);}90%{transform:translateX(-8px);}}';
 
   const re = fixChainedPercentage(str);
   expect(re).toBe(returnStr);
