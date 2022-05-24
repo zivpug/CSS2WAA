@@ -5,6 +5,7 @@ export const waa2css = (
     const cssKeyframe: any = {...keyframe};
     if (cssKeyframe.offset || cssKeyframe.offset === 0) {
         const percent = `${Math.round(cssKeyframe.offset * 100)}%`;
+        delete cssKeyframe.offset;
         return `${keyframes} ${percent} {${parseKeyframe(cssKeyframe)}}\n`;
     }
     return `${keyframes}`;
