@@ -4,10 +4,9 @@ import {
   fixChainedPercentage,
   fixMissingLastSemicolon,
   convertPercentagesToDecimal,
-  css2waa, fixNamedPercentagesAndClean,
+  css2waa, stringFixes,
 } from './CSS2WAA';
 import * as vars from "./testVars";
-
 
 
 test('returns correct WAA object', () => {
@@ -25,7 +24,7 @@ test('returns correct WAA object', () => {
 });
 
 test("will clean string and replace named percentages (to/from) to numbers", () => {
-  const re = fixNamedPercentagesAndClean(vars.tesAnimationPercentages)
+  const re = stringFixes(vars.tesAnimationPercentages)
   expect(re).toBe(vars.returnedAnimationPercentages)
 })
 
