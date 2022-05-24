@@ -13,11 +13,13 @@ export const waa2css = (
 
 export const parseKeyframe = (keyframe: {[key: string]: string}): string => {
     return Object.keys(keyframe).reduce((str: string, key: string) => {
-        return `${str} ${fixTransformOriginToCss(key)}: ${keyframe[key]};`
+        return `${str} ${fixPropertiesForCss(key)}: ${keyframe[key]};`
     }, '')
 }
 
-export const fixTransformOriginToCss = (key: string): string => {
-    return key.replace(/transformOrigin/, 'transform-origin');
+export const fixPropertiesForCss = (key: string): string => {
+    key = key.replace(/transformOrigin/, 'transform-origin');
+    key = key.replace('easing', 'animation-timing-function');
+    return key;
 };
 

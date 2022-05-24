@@ -1,84 +1,23 @@
-import {fixTransformOriginToCss, waa2css, parseKeyframe} from "./WAA2CSS";
-
-const testWaaAnimation = [
-    {
-        offset: 0,
-        transform: 'translateY(-500px) rotate(-90deg)',
-        'animation-timing-function': 'ease-in',
-        opacity: '0',
-    },
-    {
-        offset: 0.38,
-        transform: 'translateY(0)',
-        'animation-timing-function': 'ease-out',
-        opacity: '1',
-    },
-    {
-        offset: 0.55,
-        transform: 'translateY(-65px)',
-        'animation-timing-function': 'ease-in',
-    },
-    {
-        offset: 0.72,
-        transform: 'translateY(0) rotate(0deg)',
-        'animation-timing-function': 'ease-out',
-    },
-    {
-        offset: 0.81,
-        transform: 'translateY(-28px)',
-        'animation-timing-function': 'ease-in',
-    },
-    {
-        offset: 0.9,
-        transform: 'translateY(0)',
-        'animation-timing-function': 'ease-out',
-    },
-    {
-        offset: 0.95,
-        transform: 'translateY(-8px)',
-        'animation-timing-function': 'ease-in',
-    },
-    {
-        offset: 1,
-        transform: 'translateY(0)  rotate(90deg)',
-        'animation-timing-function': 'ease-out',
-    },
-];
-
-const returnedTestCss = ` 0% { transform: translateY(-500px) rotate(-90deg); animation-timing-function: ease-in; opacity: 0;}
- 38% { transform: translateY(0); animation-timing-function: ease-out; opacity: 1;}
- 55% { transform: translateY(-65px); animation-timing-function: ease-in;}
- 72% { transform: translateY(0) rotate(0deg); animation-timing-function: ease-out;}
- 81% { transform: translateY(-28px); animation-timing-function: ease-in;}
- 90% { transform: translateY(0); animation-timing-function: ease-out;}
- 95% { transform: translateY(-8px); animation-timing-function: ease-in;}
- 100% { transform: translateY(0)  rotate(90deg); animation-timing-function: ease-out;}
-`;
-
-
-
-const testKeyframe = {
-    "transform": "translateY(0)",
-    "transformOrigin": "top left",
-    "opacity": "1",
-    "easing": "ease-out"
-}
+import {waa2css, parseKeyframe, fixPropertiesForCss} from "./WAA2CSS";
+import * as vars from "./testVars";
 
 test("should return a string with valid CSS animation", () => {
-    const re = waa2css(testWaaAnimation);
-    expect(re).toBe(returnedTestCss);
+    const re = waa2css(vars.testWaaAnimation);
+    expect(re).toBe(vars.returnedTestCss);
 })
 
-
 test("should change transformOrigin into transform-origin", () => {
-    const re = fixTransformOriginToCss('transformOrigin');
+    const re = fixPropertiesForCss('transformOrigin');
     expect(re).toBe("transform-origin");
 
-    const re2 = fixTransformOriginToCss('transform');
+    const re2 = fixPropertiesForCss('transform');
     expect(re2).toBe("transform");
+
+    const re3 = fixPropertiesForCss("easing");
+    expect(re3).toBe("animation-timing-function");
 })
 
 test("should return string from keyframe object", () => {
-    const re = parseKeyframe(testKeyframe);
-    expect(re).toBe(" transform: translateY(0); transform-origin: top left; opacity: 1; easing: ease-out;");
+    const re = parseKeyframe(vars.testKeyframe);
+    expect(re).toBe(" transform: translateY(0); transform-origin: top left; opacity: 1; animation-timing-function: ease-out;");
 })

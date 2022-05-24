@@ -89,6 +89,7 @@ export const fixNamedPercentagesAndClean = (string: string): string => {
   string = string.replace('% ,', '%, ');
   string = string.replace(multiSpaces, ' ');
   string = string.replace(multiSemicolons, ';');
+  string = string.replace('animation-timing-function', 'easing');
   return string;
 }
 
